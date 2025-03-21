@@ -1,0 +1,162 @@
+body {
+  background-color: #121212;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.genre-input {
+  display: block;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.genre-input input {
+  padding: 10px 10px;
+  font-size: 16px;
+  background-color: #2a2a2a;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  color: white;
+  width: 100px;
+}
+
+.genre-input input::placeholder {
+  color: #909090;
+}
+
+.genre-input input:focus {
+  outline: none;
+  border-color: #00e5ff;
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #f0f0f0;
+}
+
+#createPlaylist {
+  background-color: black;
+  border: 1px solid white;
+  color: white;
+  margin-bottom: 20px;
+}
+
+#createPlaylist:hover {
+  background-color: #333;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  perspective: 1000px;
+}
+
+.card {
+  background: #181818;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  width: 300px;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.card h3 {
+  color: white;
+  font-size: 1.25rem;
+  margin: 8px 0;
+  font-weight: 700;
+}
+
+.card p {
+  color: #b3b3b3;
+  font-size: 0.9rem;
+  margin: 4px 0 16px;
+}
+
+@media (max-width: 768px) {
+  .genre-input {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .genre-input input {
+    width: 100%;
+  }
+
+  .card {
+    width: 90%;
+    max-width: 300px;
+  }
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  margin: 20px 0;
+}
+
+.bar {
+  display: inline-block;
+  width: 3px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, .5);
+  border-radius: 10px;
+  animation: scale-up4 1s linear infinite;
+}
+
+.bar:nth-child(2) {
+  height: 35px;
+  margin: 0 5px;
+  animation-delay: .25s;
+}
+
+.bar:nth-child(3) {
+  animation-delay: .5s;
+}
+
+@keyframes scale-up4 {
+  20% {
+    background-color: #ffffff;
+    transform: scaleY(1.5);
+  }
+  40% {
+    transform: scaleY(1);
+  }
+}
