@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import TinderCard from 'react-tinder-card';
-import '../Styles/Display.css';
+import '../styles/Display.css';
 
 interface Song {
   id: string;
