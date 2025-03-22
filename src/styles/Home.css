@@ -76,8 +76,3 @@ h1 {
     font-size: 13px;
   }
 }
-
-.music-emoji {
-    display: inline-block;
-    filter: hue-rotate(220deg) saturate(10) brightness(1.2);
-  }
