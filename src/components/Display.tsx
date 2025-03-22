@@ -37,16 +37,11 @@ function Display() {
           setIsAuth(true);
           // Store the access token in local storage
           localStorage.setItem('accessToken', response.data.accessToken);
-        } else {
-          // If not authenticated, redirect to Spotify OAuth2 login
-          window.location.href = `${import.meta.env.VITE_BACKEND_URL}/oauth2/authorization/spotify`;
         }
       })
       .catch((error) => {
         console.error('Authentication error:', error);
         setIsAuth(false);
-        // Redirect to Spotify OAuth2 login on network errors or other issues
-        window.location.href = `${import.meta.env.VITE_BACKEND_URL}/oauth2/authorization/spotify`;
       })
       .finally(() => setIsLoading(false));
   }, []);
