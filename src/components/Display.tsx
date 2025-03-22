@@ -29,35 +29,9 @@ function Display() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const tinderCardRef = useRef<any>(null);
 
-  // Check authentication status on component mount
-  useEffect(() => {
-    api.post('/authenticate')
-      .then((response) => {
-        if (response.data.authenticated) {
-          setIsAuth(true);
-          // Store the access token in local storage
-          localStorage.setItem('accessToken', response.data.accessToken);
-        }
-      })
-      .catch((error) => {
-        console.error('Authentication error:', error);
-        setIsAuth(false);
-      })
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  // Create an authenticated API instance with the access token
-  const authenticatedApi = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL,
-    withCredentials: true,
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-    },
-  });
-
   const handlePlaylistCreation = async () => {
     try {
-      const response = await authenticatedApi.post('/createPlaylist', {});
+      const response = await api.post('/createPlaylist', {});
       alert(response.data);
     } catch (error) {
       console.error('Error creating a playlist:', error);
@@ -67,7 +41,7 @@ function Display() {
 
   const fetchRecommendations = async (genre: string) => {
     try {
-      const response = await authenticatedApi.get(`/getRecommendations?genre=${genre}`);
+      const response = await api.get(`/getRecommendations?genre=${genre}`);
       setTrackData((prevTracks) => [...prevTracks, ...response.data]);
       return response;
     } catch (error) {
@@ -78,14 +52,24 @@ function Display() {
       setIsFetching(false);
     }
   };
+  
 
   const addSongToPlaylist = async (songId: string) => {
     try {
-      await authenticatedApi.post('/likedSong', { trackIds: [songId] });
+      await api.post('/likedSong', { trackIds: [songId] });
     } catch (error) {
       console.error('Error adding song to playlist:', error);
     }
   };
+
+  useEffect(() => {
+    api.post('/authenticate')
+      .then((response) => {
+        if (response.status === 200) setIsAuth(true);
+      })
+      .catch(console.error)
+      .finally(() => setTimeout(() => setIsLoading(false), 1000));
+  }, []);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -132,7 +116,6 @@ function Display() {
     try {
       await fetchRecommendations(inputGenre);
     } catch (error) {
-      console.error('Error fetching songs:', error);
     }
   };
 
