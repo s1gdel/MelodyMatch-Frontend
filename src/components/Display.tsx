@@ -85,7 +85,7 @@ function Display() {
     let intervalId: NodeJS.Timeout;
     if (genre) {
       fetchRecommendations(genre);
-      intervalId = setInterval(() => fetchRecommendations(genre), 40000);
+      intervalId = setInterval(() => fetchRecommendations(genre), 42000);
     }
     return () => intervalId && clearInterval(intervalId);
   }, [genre]);
