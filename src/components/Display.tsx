@@ -182,7 +182,7 @@ function Display() {
                 <ul>
                   <li>1. You haven't generated any songs</li>
                   <li>2. Songs are still loading</li>
-                  <li>3. You hit your limit of 600 songs</li>
+                  <li>3. You hit your daily limit</li>
                 </ul>
               </>
             )}
