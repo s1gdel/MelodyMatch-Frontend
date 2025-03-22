@@ -29,9 +29,9 @@ function Display() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const tinderCardRef = useRef<any>(null);
 
-  // Remove automatic redirect in authentication check.
+
   useEffect(() => {
-    // We use POST since your backend mapping is POST /authenticate
+
     api.post('/authenticate')
       .then((response) => {
         if (response.status === 200) {
@@ -46,7 +46,6 @@ function Display() {
   }, []);
 
   const handleLogin = () => {
-    // Redirect user to start the OAuth flow manually.
     window.location.href = `${import.meta.env.VITE_BACKEND_URL}/oauth2/authorization/spotify`;
   };
 
@@ -127,7 +126,7 @@ function Display() {
     try {
       await fetchRecommendations(inputGenre);
     } catch (error) {
-      // error handled in fetchRecommendations
+     alert("Errir fetching recommendations.")
     }
   };
 
