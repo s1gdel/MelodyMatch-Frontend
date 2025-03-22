@@ -29,6 +29,27 @@ function Display() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const tinderCardRef = useRef<any>(null);
 
+  // Remove automatic redirect in authentication check.
+  useEffect(() => {
+    // We use POST since your backend mapping is POST /authenticate
+    api.post('/authenticate')
+      .then((response) => {
+        if (response.status === 200) {
+          setIsAuth(true);
+        }
+      })
+      .catch((error) => {
+        console.error('User is not authenticated:', error);
+        setIsAuth(false);
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  const handleLogin = () => {
+    // Redirect user to start the OAuth flow manually.
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/oauth2/authorization/spotify`;
+  };
+
   const handlePlaylistCreation = async () => {
     try {
       const response = await api.post('/createPlaylist', {});
@@ -61,23 +82,6 @@ function Display() {
     }
   };
 
-  // Instead of using an AJAX call for authentication,
-  // we try to check with the backend and if not authenticated, redirect to Spotify's OAuth endpoint.
-  useEffect(() => {
-    api.get('/authenticate')
-      .then((response) => {
-        if (response.status === 200) {
-          setIsAuth(true);
-        }
-      })
-      .catch((error) => {
-        console.error('Authentication check failed, redirecting to login:', error);
-        // Redirect the browser to the OAuth authorization endpoint
-        window.location.href = `${import.meta.env.VITE_BACKEND_URL}/oauth2/authorization/spotify`;
-      })
-      .finally(() => setIsLoading(false));
-  }, []);
-
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
     if (genre) {
@@ -109,7 +113,7 @@ function Display() {
 
   const onSwipe = (direction: string) => {
     if (!canSwipe) return;
-
+    
     const swipedSongId = trackData[currentIndex].id;
     if (direction === 'right') addSongToPlaylist(swipedSongId);
     setCurrentIndex((prev) => prev + 1);
@@ -186,12 +190,13 @@ function Display() {
           </div>
         </>
       ) : (
-        <>
+        <div>
           <h1>You're not logged in.</h1>
+          <button onClick={handleLogin}>Login with Spotify</button>
           <Link to="/home">
-            <button>Return to Login</button>
+            <button>Return to Home</button>
           </Link>
-        </>
+        </div>
       )}
     </div>
   );
