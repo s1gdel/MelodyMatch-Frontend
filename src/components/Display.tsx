@@ -52,7 +52,6 @@ function Display() {
       setIsFetching(false);
     }
   };
-  
 
   const addSongToPlaylist = async (songId: string) => {
     try {
@@ -62,13 +61,21 @@ function Display() {
     }
   };
 
+  // Instead of using an AJAX call for authentication,
+  // we try to check with the backend and if not authenticated, redirect to Spotify's OAuth endpoint.
   useEffect(() => {
-    api.post('/authenticate')
+    api.get('/authenticate')
       .then((response) => {
-        if (response.status === 200) setIsAuth(true);
+        if (response.status === 200) {
+          setIsAuth(true);
+        }
       })
-      .catch(console.error)
-      .finally(() => setTimeout(() => setIsLoading(false), 1000));
+      .catch((error) => {
+        console.error('Authentication check failed, redirecting to login:', error);
+        // Redirect the browser to the OAuth authorization endpoint
+        window.location.href = `${import.meta.env.VITE_BACKEND_URL}/oauth2/authorization/spotify`;
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {
@@ -102,7 +109,7 @@ function Display() {
 
   const onSwipe = (direction: string) => {
     if (!canSwipe) return;
-    
+
     const swipedSongId = trackData[currentIndex].id;
     if (direction === 'right') addSongToPlaylist(swipedSongId);
     setCurrentIndex((prev) => prev + 1);
@@ -116,6 +123,7 @@ function Display() {
     try {
       await fetchRecommendations(inputGenre);
     } catch (error) {
+      // error handled in fetchRecommendations
     }
   };
 
@@ -138,12 +146,12 @@ function Display() {
             <button onClick={handleGetSongs}>Get Songs</button>
           </div>
           {isFetching && (
-              <div className="loader">
-                <span className="bar"></span>
-                <span className="bar"></span>
-                <span className="bar"></span>
-              </div>
-            )}
+            <div className="loader">
+              <span className="bar"></span>
+              <span className="bar"></span>
+              <span className="bar"></span>
+            </div>
+          )}
           <div className="card-container">
             {trackData.length > 0 && currentIndex < trackData.length ? (
               <TinderCard
